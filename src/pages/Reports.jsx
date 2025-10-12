@@ -18,6 +18,8 @@ export default function Reports() {
   });
   const [rents, setRents] = useState([]);
   const [returns, setReturns] = useState([]);
+  const [beneficiaries, setBeneficiaries] = useState([]);
+  const [equipment, setEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,6 +48,8 @@ export default function Reports() {
 
       setRents(rentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setReturns(returnsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setBeneficiaries(beneficiariesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setEquipment(equipmentSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     } catch (error) {
       console.error('Error fetching report data:', error);
     } finally {
@@ -171,21 +175,35 @@ export default function Reports() {
 
         {/* Export Buttons */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Export Data</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Export Data to Excel</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
-              onClick={() => exportToCSV(rents, 'active_rents')}
+              onClick={() => exportToCSV(beneficiaries, 'all_beneficiaries')}
+              className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
+            >
+              <Download size={20} />
+              <span>Export Beneficiaries</span>
+            </button>
+            <button
+              onClick={() => exportToCSV(equipment, 'all_equipments')}
+              className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors"
+            >
+              <Download size={20} />
+              <span>Export Equipments</span>
+            </button>
+            <button
+              onClick={() => exportToCSV(rents, 'all_rents')}
               className="flex items-center justify-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg transition-colors"
             >
               <Download size={20} />
-              <span>Export Active Rents</span>
+              <span>Export Rents</span>
             </button>
             <button
-              onClick={() => exportToCSV(returns, 'returns_history')}
+              onClick={() => exportToCSV(returns, 'all_returns')}
               className="flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors"
             >
               <Download size={20} />
-              <span>Export Returns History</span>
+              <span>Export Returns</span>
             </button>
           </div>
         </div>

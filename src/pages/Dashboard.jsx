@@ -10,7 +10,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [stats, setStats] = useState({
-    equipmentList: []
+    equipmentTypes: []
   });
   const [loading, setLoading] = useState(true);
 
@@ -26,8 +26,30 @@ export default function Dashboard() {
         ...doc.data()
       }));
 
+      // Group equipment by type
+      const equipmentTypes = {};
+      equipmentList.forEach(equipment => {
+        const type = equipment.type || equipment.name || 'Other';
+        if (!equipmentTypes[type]) {
+          equipmentTypes[type] = {
+            type: type,
+            items: [],
+            totalCount: 0,
+            availableCount: 0,
+            rentedCount: 0
+          };
+        }
+        equipmentTypes[type].items.push(equipment);
+        equipmentTypes[type].totalCount++;
+        if (equipment.status === 'Available') {
+          equipmentTypes[type].availableCount++;
+        } else {
+          equipmentTypes[type].rentedCount++;
+        }
+      });
+
       setStats({
-        equipmentList: equipmentList
+        equipmentTypes: Object.values(equipmentTypes)
       });
     } catch (error) {
       console.error('Error fetching equipment:', error);
@@ -129,42 +151,60 @@ export default function Dashboard() {
           })}
         </div>
 
-        {/* Equipment List */}
+        {/* Equipment Types */}
         <div className="mt-12 bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Available Equipment</h2>
-          {stats.equipmentList.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No equipment available</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Equipment Types We Provide</h2>
+          {stats.equipmentTypes.length === 0 ? (
+            <p className="text-gray-500 text-center py-8">No equipment types available</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {stats.equipmentList.map((equipment) => (
-                <div key={equipment.id} className="border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      <Package className="text-green-600" size={24} />
-                      <h3 className="text-lg font-bold text-gray-800">{equipment.name}</h3>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      equipment.status === 'Available' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {equipment.status}
-                    </span>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Serial Number:</span>
-                      <span className="font-semibold text-gray-800">{equipment.serialNumber}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Type:</span>
-                      <span className="font-semibold text-gray-800">{equipment.type || 'N/A'}</span>
-                    </div>
-                    {equipment.description && (
-                      <div className="mt-3 pt-3 border-t border-gray-100">
-                        <p className="text-gray-600 text-xs">{equipment.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {stats.equipmentTypes.map((equipmentType, index) => (
+                <div key={index} className="border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-xl transition-all">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4 pb-4 border-b-2 border-gray-100">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-blue-100 p-3 rounded-lg">
+                        <Package className="text-blue-600" size={28} />
                       </div>
-                    )}
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-800">{equipmentType.type}</h3>
+                        <p className="text-sm text-gray-500">Total: {equipmentType.totalCount} units</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-green-50 rounded-lg p-3">
+                      <p className="text-xs text-green-600 font-semibold mb-1">Available</p>
+                      <p className="text-2xl font-bold text-green-700">{equipmentType.availableCount}</p>
+                    </div>
+                    <div className="bg-red-50 rounded-lg p-3">
+                      <p className="text-xs text-red-600 font-semibold mb-1">Rented</p>
+                      <p className="text-2xl font-bold text-red-700">{equipmentType.rentedCount}</p>
+                    </div>
+                  </div>
+
+                  {/* Equipment Items */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-gray-600 uppercase">Items:</p>
+                    <div className="max-h-40 overflow-y-auto space-y-2">
+                      {equipmentType.items.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between bg-gray-50 rounded p-2 text-sm">
+                          <div>
+                            <p className="font-semibold text-gray-800">{item.name}</p>
+                            <p className="text-xs text-gray-500">SN: {item.serialNumber}</p>
+                          </div>
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            item.status === 'Available' 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-red-100 text-red-800'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}

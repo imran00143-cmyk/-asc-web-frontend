@@ -217,19 +217,18 @@ export default function Welcome() {
 
       {/* Equipment Types Section */}
       {stats.equipmentTypes.length > 0 && (
-        <section className="container mx-auto px-4 py-16 bg-white rounded-3xl shadow-xl mb-16">
+        <section className="container mx-auto px-4 py-16">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Available Equipment Types</h2>
-            <p className="text-xl text-gray-600">Medical equipment we provide</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Medical Equipment We Provide</h2>
+            <p className="text-xl text-gray-600">Types of equipment available for rent</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="flex flex-wrap justify-center gap-3">
             {stats.equipmentTypes.map((type, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center hover:shadow-lg transition-all transform hover:scale-105"
+                className="bg-white border-2 border-blue-500 rounded-2xl px-5 py-3 shadow-md"
               >
-                <Package className="mx-auto mb-3 text-blue-600" size={40} />
-                <p className="font-semibold text-gray-800">{type}</p>
+                <p className="text-blue-600 font-semibold text-base">{type}</p>
               </div>
             ))}
           </div>
