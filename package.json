@@ -2,6 +2,7 @@
   "name": "asc-web-frontend",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "ASC - Amine Shariyat Committee Web Application",
   "dependencies": {
     "date-fns": "^2.30.0",
