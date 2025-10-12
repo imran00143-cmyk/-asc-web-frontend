@@ -10,9 +10,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [stats, setStats] = useState({
-    totalBeneficiaries: 0,
-    totalEquipment: 0,
-    activeRentals: 0
+    equipmentList: []
   });
   const [loading, setLoading] = useState(true);
 
@@ -22,17 +20,17 @@ export default function Dashboard() {
 
   async function fetchStats() {
     try {
-      const beneficiariesSnap = await getDocs(collection(db, 'beneficiaries'));
       const equipmentSnap = await getDocs(collection(db, 'equipments'));
-      const rentsSnap = await getDocs(collection(db, 'rents'));
+      const equipmentList = equipmentSnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
 
       setStats({
-        totalBeneficiaries: beneficiariesSnap.size,
-        totalEquipment: equipmentSnap.size,
-        activeRentals: rentsSnap.size
+        equipmentList: equipmentList
       });
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      console.error('Error fetching equipment:', error);
     } finally {
       setLoading(false);
     }
@@ -131,23 +129,47 @@ export default function Dashboard() {
           })}
         </div>
 
-        {/* Quick Stats */}
+        {/* Equipment List */}
         <div className="mt-12 bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Quick Stats</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <p className="text-blue-600 font-semibold">Total Beneficiaries</p>
-              <p className="text-3xl font-bold text-blue-700 mt-2">{stats.totalBeneficiaries}</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Available Equipment</h2>
+          {stats.equipmentList.length === 0 ? (
+            <p className="text-gray-500 text-center py-8">No equipment available</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {stats.equipmentList.map((equipment) => (
+                <div key={equipment.id} className="border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                      <Package className="text-green-600" size={24} />
+                      <h3 className="text-lg font-bold text-gray-800">{equipment.name}</h3>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      equipment.status === 'Available' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {equipment.status}
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Serial Number:</span>
+                      <span className="font-semibold text-gray-800">{equipment.serialNumber}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Type:</span>
+                      <span className="font-semibold text-gray-800">{equipment.type || 'N/A'}</span>
+                    </div>
+                    {equipment.description && (
+                      <div className="mt-3 pt-3 border-t border-gray-100">
+                        <p className="text-gray-600 text-xs">{equipment.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="bg-green-50 rounded-lg p-4">
-              <p className="text-green-600 font-semibold">Total Equipment</p>
-              <p className="text-3xl font-bold text-green-700 mt-2">{stats.totalEquipment}</p>
-            </div>
-            <div className="bg-orange-50 rounded-lg p-4">
-              <p className="text-orange-600 font-semibold">Active Rentals</p>
-              <p className="text-3xl font-bold text-orange-700 mt-2">{stats.activeRentals}</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </Layout>
