@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase';
 import Layout from '../components/Layout';
 import { Users, Package, ShoppingCart, RotateCcw, FileText, UserCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +9,34 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const [stats, setStats] = useState({
+    totalBeneficiaries: 0,
+    totalEquipment: 0,
+    activeRentals: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  async function fetchStats() {
+    try {
+      const beneficiariesSnap = await getDocs(collection(db, 'beneficiaries'));
+      const equipmentSnap = await getDocs(collection(db, 'equipments'));
+      const rentsSnap = await getDocs(collection(db, 'rents'));
+
+      setStats({
+        totalBeneficiaries: beneficiariesSnap.size,
+        totalEquipment: equipmentSnap.size,
+        activeRentals: rentsSnap.size
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const menuItems = [
     {
@@ -45,6 +75,17 @@ export default function Dashboard() {
       path: '/reports'
     }
   ];
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -96,15 +137,15 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-blue-50 rounded-lg p-4">
               <p className="text-blue-600 font-semibold">Total Beneficiaries</p>
-              <p className="text-3xl font-bold text-blue-700 mt-2">-</p>
+              <p className="text-3xl font-bold text-blue-700 mt-2">{stats.totalBeneficiaries}</p>
             </div>
             <div className="bg-green-50 rounded-lg p-4">
               <p className="text-green-600 font-semibold">Total Equipment</p>
-              <p className="text-3xl font-bold text-green-700 mt-2">-</p>
+              <p className="text-3xl font-bold text-green-700 mt-2">{stats.totalEquipment}</p>
             </div>
             <div className="bg-orange-50 rounded-lg p-4">
               <p className="text-orange-600 font-semibold">Active Rentals</p>
-              <p className="text-3xl font-bold text-orange-700 mt-2">-</p>
+              <p className="text-3xl font-bold text-orange-700 mt-2">{stats.activeRentals}</p>
             </div>
           </div>
         </div>
