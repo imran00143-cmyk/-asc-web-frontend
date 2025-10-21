@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Users, Package, CheckCircle, ShoppingCart, TrendingUp, LogIn, UserPlus, Heart } from 'lucide-react';
+import gumbadImg from '../assets/gumbad.png';
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -121,8 +122,8 @@ export default function Welcome() {
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
             Welcome to <span className="text-blue-600">ASM</span>
           </h1>
-           <div className="flex justify-center mb-4">
-            <img src="src/assets/gumbad.png" alt="gumbad" className="mx-auto block w-48 h-auto" />
+          <div className="flex justify-center mb-4">
+            <img src={gumbadImg} alt="Gumbad" className="mx-auto block w-48 h-auto" onError={(e) => { console.error('Image load error:', e); }} />
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-4">
             Amine Shariyat Mission
