@@ -91,8 +91,8 @@ export default function Welcome() {
                 <Heart className="text-white" size={32} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">ASC</h1>
-                <p className="text-sm text-gray-600">Amine Shariyat Committee</p>
+                <h1 className="text-2xl font-bold text-gray-800">ASM</h1>
+                <p className="text-sm text-gray-600">Amine Shariyat Mission</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -119,10 +119,10 @@ export default function Welcome() {
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
-            Welcome to <span className="text-blue-600">ASC</span>
+            Welcome to <span className="text-blue-600">ASM</span>
           </h1>
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-4">
-            Amine Shariyat Committee
+            Amine Shariyat Mission
           </h2>
           <p className="text-xl text-gray-600 mb-8">
             Empowering communities through accessible medical equipment and compassionate care
@@ -256,10 +256,10 @@ export default function Welcome() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <Heart className="text-red-400" size={24} />
-            <p className="text-xl font-semibold">ASC - Amine Shariyat Committee</p>
+            <p className="text-xl font-semibold">ASM - Amine Shariyat Mission</p>
           </div>
           <p className="text-gray-400">Serving the community with compassion and care</p>
-          <p className="text-gray-500 mt-4">&copy; 2025 All rights reserved.</p>
+          <p className="text-gray-500 mt-4">&copy; 2025 All rights reserved. Website developed by IAM_KNK. Contact us on imran00143@gmail.com</p>
         </div>
       </footer>
     </div>
