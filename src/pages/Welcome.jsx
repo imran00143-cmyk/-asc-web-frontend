@@ -121,6 +121,9 @@ export default function Welcome() {
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
             Welcome to <span className="text-blue-600">ASM</span>
           </h1>
+           <div className="flex justify-center mb-4">
+            <img src="public/Gumbad.png" alt="Gumbad" className="mx-auto block w-48 h-auto" />
+          </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-4">
             Amine Shariyat Mission
           </h2>
