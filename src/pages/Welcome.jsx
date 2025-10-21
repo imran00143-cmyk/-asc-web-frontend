@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Users, Package, CheckCircle, ShoppingCart, TrendingUp, LogIn, UserPlus, Heart } from 'lucide-react';
-import gumbadImg from '../assets/gumbad.png';
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -123,7 +122,7 @@ export default function Welcome() {
             Welcome to <span className="text-blue-600">ASM</span>
           </h1>
           <div className="flex justify-center mb-4">
-            <img src={gumbadImg} alt="Gumbad" className="mx-auto block w-48 h-auto" onError={(e) => { console.error('Image load error:', e); }} />
+            <img src="Pictures/Gumbad.png" alt="Gumbad" className="mx-auto block w-48 h-auto" />
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-4">
             Amine Shariyat Mission
@@ -263,7 +262,7 @@ export default function Welcome() {
             <p className="text-xl font-semibold">ASM - Amine Shariyat Mission</p>
           </div>
           <p className="text-gray-400">Serving the community with compassion and care</p>
-          <p className="text-gray-500 mt-4">&copy; 2025 All rights reserved. Website developed by IAM_KNK. Contact us on imran00143@gmail.com</p>
+          <p className="text-gray-500 mt-4">&copy; 2025 All rights reserved.Web Developed by IAM_Knk. Contact Us: imran00143@gmail.com</p>
         </div>
       </footer>
     </div>
