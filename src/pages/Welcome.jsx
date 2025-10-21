@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Users, Package, CheckCircle, ShoppingCart, TrendingUp, LogIn, UserPlus, Heart } from 'lucide-react';
+import Gumbad from '../assets/Gumbad.png';
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ export default function Welcome() {
             Welcome to <span className="text-blue-600">ASM</span>
           </h1>
           <div className="flex justify-center mb-4">
-            <img src={`${import.meta.env.BASE_URL}Pictures/Gumbad.png`} alt="Gumbad" className="mx-auto block w-48 h-auto" />
+            <img src={Gumbad} alt="Gumbad" className="mx-auto block w-48 h-auto" />
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-4">
             Amine Shariyat Mission
