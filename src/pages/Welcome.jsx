@@ -1,115 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { Users, Package, CheckCircle, ShoppingCart, TrendingUp, LogIn, UserPlus, Heart } from 'lucide-react';
-import Gumbad from '../assets/Gumbad.png';
+import { LogIn } from 'lucide-react';
+import Gumbad from '../assets/Gumbad/Gumbad.png';
+import OxygenConcentrator from '../assets/Equipment/OxygenConcentrator.png';
+import Logo from '../assets/Logos/ASM.png';
+import OC from '../assets/Equipment/OC.png';
+import WC from '../assets/Equipment/WC.png';
+import Stick from '../assets/Equipment/Stick.png';
+import bed from '../assets/Equipment/bed.png';
 
 export default function Welcome() {
   const navigate = useNavigate();
-  const [stats, setStats] = useState({
-    totalBeneficiaries: 0,
-    totalEquipment: 0,
-    availableEquipment: 0,
-    rentedEquipment: 0,
-    totalBenefitsGiven: 0,
-    equipmentTypes: []
-  });
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchPublicStats();
-  }, []);
 
-  async function fetchPublicStats() {
-    try {
-      console.log('Fetching statistics from Firebase...');
-      
-      // Fetch beneficiaries
-      const beneficiariesSnap = await getDocs(collection(db, 'beneficiaries'));
-      console.log('Beneficiaries count:', beneficiariesSnap.size);
-      
-      // Fetch equipment
-      const equipmentSnap = await getDocs(collection(db, 'equipments'));
-      console.log('Equipment count:', equipmentSnap.size);
-      
-      const equipmentData = equipmentSnap.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      console.log('Equipment data:', equipmentData);
-      
-      // Count available and rented equipment
-      const availableCount = equipmentData.filter(e => e.status === 'Available').length;
-      const rentedCount = equipmentData.filter(e => e.status === 'Rented').length;
-      console.log('Available:', availableCount, 'Rented:', rentedCount);
-      
-      // Get unique equipment types
-      const types = [...new Set(equipmentData.map(e => e.equipmentName).filter(name => name))];
-      console.log('Equipment types:', types);
-      
-      // Fetch returns to count total benefits
-      const returnsSnap = await getDocs(collection(db, 'returns'));
-      const rentsSnap = await getDocs(collection(db, 'rents'));
-      const totalBenefits = returnsSnap.size + rentsSnap.size;
-      console.log('Total benefits:', totalBenefits, '(Returns:', returnsSnap.size, 'Rents:', rentsSnap.size, ')');
-
-      setStats({
-        totalBeneficiaries: beneficiariesSnap.size,
-        totalEquipment: equipmentSnap.size,
-        availableEquipment: availableCount,
-        rentedEquipment: rentedCount,
-        totalBenefitsGiven: totalBenefits,
-        equipmentTypes: types
-      });
-      
-      console.log('Statistics updated successfully');
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-      console.error('Error details:', error.message);
-      // Set default values on error
-      setStats({
-        totalBeneficiaries: 0,
-        totalEquipment: 0,
-        availableEquipment: 0,
-        rentedEquipment: 0,
-        totalBenefitsGiven: 0,
-        equipmentTypes: []
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-yellow to-green-200">
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+      <header className="bg-green-100 shadow-md sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-blue-600 rounded-full p-2">
-                <Heart className="text-white" size={32} />
+              <div className="w-12 h-12 rounded-full overflow-hidden">
+                <img src={Logo} alt="ASM Logo" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-800">ASM</h1>
-                <p className="text-sm text-gray-600">Amine Shariyat Mission</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center space-x-4">
+                <button
+                  onClick={() => navigate('/')}
+                  className="px-3 py-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Home
+                </button>
+                <button
+                  onClick={() => navigate('/gallery')}
+                  className="px-3 py-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Gallery
+                </button>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="px-3 py-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Contact Us
+                </button>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="px-3 py-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                >
+                  About
+                </button>
+              </div>
               <button
                 onClick={() => navigate('/login')}
-                className="flex items-center space-x-2 px-4 py-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold transition-colors shadow"
+
               >
                 <LogIn size={20} />
                 <span className="hidden sm:inline">Login</span>
-              </button>
-              <button
-                onClick={() => navigate('/register')}
-                className="flex items-center space-x-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors shadow-lg"
-              >
-                <UserPlus size={20} />
-                <span>Register</span>
               </button>
             </div>
           </div>
@@ -123,7 +76,7 @@ export default function Welcome() {
             Welcome to <span className="text-blue-600">ASM</span>
           </h1>
           <div className="flex justify-center mb-4">
-            <img src={Gumbad} alt="Gumbad" className="mx-auto block w-48 h-auto" />
+            <img src={Gumbad} alt="Gumbad" className="mx-auto block h-80 h-auto" />
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-4">
             Amine Shariyat Mission
@@ -131,113 +84,163 @@ export default function Welcome() {
           <p className="text-xl text-gray-600 mb-8">
             Empowering communities through accessible medical equipment and compassionate care
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/register-beneficiary')}
-              className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-xl shadow-xl transition-all transform hover:scale-105"
-            >
-              Register as Beneficiary
-            </button>
-            <button
-              onClick={() => {
-                document.getElementById('stats-section').scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-8 py-4 bg-white hover:bg-gray-50 text-blue-600 text-lg font-semibold rounded-xl shadow-xl border-2 border-blue-600 transition-all transform hover:scale-105"
-            >
-              View Our Impact
-            </button>
+          <p className="text-xl text-gray-600 mb-8">
+            Here, We are providing free rental of medical equipment to those in need, ensuring everyone has access to essential healthcare resources.
+          </p>
+        </div>
+      </section>
+
+      {/* OxygenConcentrator Image and Details Box Section */}
+      <section className="container mx-auto px-4 py-8">
+        <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
+          <div className="flex flex-col md:flex-row">
+            {/* Image Side */}
+            <div className="md:w-1/4 overflow-hidden">
+              <img 
+                src={OxygenConcentrator} 
+                alt="Medical Equipment" 
+                className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            {/* Content Side */}
+            <div className="md:w-3/4 p-8">
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                Oxygen Concentrator
+              </h3>
+              <h3 className="text-xl text-gray-700 mb-4">
+                Oxygen Concentrator, 40 Lbs, Capacity: 3 L
+              </h3>
+              <div className="space-y-4">
+                <p className="text-gray-800 text-justify leading-relaxed">
+                  An oxygen concentrator is a medical device that provides a continuous supply of concentrated oxygen to patients with low blood oxygen levels. Unlike an oxygen cylinder, which stores a finite amount of compressed oxygen, a concentrator draws in ambient air, separates out the nitrogen, and delivers 90–95% pure oxygen to the user. 
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Statistics Dashboard */}
-      <section id="stats-section" className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Impact</h2>
-          <p className="text-xl text-gray-600">Making a difference in our community</p>
-        </div>
-
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600 text-lg">Loading statistics...</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {/* Total Registered Beneficiaries */}
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-2xl p-8 text-white transform hover:scale-105 transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <Users size={48} className="opacity-80" />
-                <TrendingUp size={32} className="opacity-60" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2 opacity-90">Registered Beneficiaries</h3>
-              <p className="text-5xl font-bold mb-2">{stats.totalBeneficiaries}</p>
-              <p className="text-sm opacity-80">Total people registered</p>
+      {/* Oxygen cylinder Image and Details Box Section */}
+      <section className="container mx-auto px-4 py-8">
+        <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
+          <div className="flex flex-col md:flex-row-reverse">
+            {/* Image Side */}
+            <div className="md:w-1/5 overflow-hidden">
+              <img 
+                src={OC} 
+                alt="Medical Equipment" 
+                className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+              />
             </div>
-
-            {/* Total Equipment & Types */}
-            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-2xl p-8 text-white transform hover:scale-105 transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <Package size={48} className="opacity-80" />
-                <TrendingUp size={32} className="opacity-60" />
+            {/* Content Side */}
+            <div className="md:w-3/4 p-8">
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                Oxygen cylinder
+              </h3>
+              <h3 className="text-xl text-gray-700 mb-4">
+                Industrial Oxygen Cylinder , 10 Ltr
+              </h3>
+              <div className="space-y-4">
+                <p className="text-gray-800 text-justify leading-relaxed">
+                  The industrial-grade oxygen cylinder is designed for both medical and industrial applications, providing a reliable source of oxygen for various needs. Crafted from durable steel, this cylinder ensures safety and longevity in demanding environments. Its compact size makes it easy to transport and store, while still delivering ample oxygen supply. Ideal for healthcare facilities, laboratories, and manufacturing processes, this oxygen cylinder is essential for maintaining optimal performance. Trust in this robust solution for your oxygen needs, whether in a clinical setting or an industrial operation. Experience efficiency and reliability with this indispensable tool for your oxygen supply requirements.
+                </p>
               </div>
-              <h3 className="text-lg font-semibold mb-2 opacity-90">Total Equipment</h3>
-              <p className="text-5xl font-bold mb-2">{stats.totalEquipment}</p>
-              <p className="text-sm opacity-80">{stats.equipmentTypes.length} different types available</p>
-            </div>
-
-            {/* Available for Rent */}
-            <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-2xl p-8 text-white transform hover:scale-105 transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <CheckCircle size={48} className="opacity-80" />
-                <TrendingUp size={32} className="opacity-60" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2 opacity-90">Available Equipment</h3>
-              <p className="text-5xl font-bold mb-2">{stats.availableEquipment}</p>
-              <p className="text-sm opacity-80">Ready to rent out</p>
-            </div>
-
-            {/* Currently Rented */}
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-2xl p-8 text-white transform hover:scale-105 transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <ShoppingCart size={48} className="opacity-80" />
-                <TrendingUp size={32} className="opacity-60" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2 opacity-90">Currently Rented</h3>
-              <p className="text-5xl font-bold mb-2">{stats.rentedEquipment}</p>
-              <p className="text-sm opacity-80">Equipment in use</p>
             </div>
           </div>
-        )}
-
-        {/* Additional Stats Card */}
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-2xl p-12 text-white text-center transform hover:scale-105 transition-all">
-          <Heart size={64} className="mx-auto mb-4 opacity-80" />
-          <h3 className="text-3xl font-bold mb-4">Total Benefits Provided</h3>
-          <p className="text-6xl font-bold mb-4">{stats.totalBenefitsGiven}</p>
-          <p className="text-xl opacity-90">Beneficiaries helped with medical equipment</p>
         </div>
       </section>
 
-      {/* Equipment Types Section */}
-      {stats.equipmentTypes.length > 0 && (
-        <section className="container mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Medical Equipment We Provide</h2>
-            <p className="text-xl text-gray-600">Types of equipment available for rent</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3">
-            {stats.equipmentTypes.map((type, index) => (
-              <div
-                key={index}
-                className="bg-white border-2 border-blue-500 rounded-2xl px-5 py-3 shadow-md"
-              >
-                <p className="text-blue-600 font-semibold text-base">{type}</p>
+{/* Wheelchair Image and Details Box Section */}
+      <section className="container mx-auto px-4 py-8">
+        <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
+          <div className="flex flex-col md:flex-row">
+            {/* Image Side */}
+            <div className="md:w-1/4 overflow-hidden">
+              <img 
+                src={WC} 
+                alt="Medical Equipment" 
+                className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            {/* Content Side */}
+            <div className="md:w-3/4 p-8">
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                Wheel Chair
+              </h3>
+              <h3 className="text-xl text-gray-700 mb-4">
+                Hospital Aluminium Wheel Chair,Size 22 Inch
+              </h3>
+              <div className="space-y-4">
+                <p className="text-gray-800 text-justify leading-relaxed">
+                  A hospital wheelchair is a specialized mobility device designed to safely and comfortably transport patients within healthcare facilities. It plays a vital role in patient care, offering support for individuals with limited mobility due to illness, injury, or surgery. Hospital wheelchairs are built with durability, ease of use, and patient comfort in mind. Most feature a sturdy steel or aluminum frame, padded seat and backrest, and large rear wheels for smooth movement. They often include swing-away or detachable armrests and elevating leg rests to accommodate various medical needs and improve accessibility during transfers. Many models are foldable, allowing for easy storage and transport, while others are designed for heavy-duty use in emergency rooms or operating theaters. Safety features such as wheel locks, anti-tip bars, and seat belts are standard to prevent accidents during movement. Some advanced hospital wheelchairs also offer reclining backs, tilt-in-space functions, or power-assisted mobility for patients requiring long-term or specialized care.
+
+                </p>
               </div>
-            ))}
+            </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+{/* Stick Image and Details Box Section */}
+      <section className="container mx-auto px-4 py-8">
+        <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
+          <div className="flex flex-col md:flex-row-reverse">
+            {/* Image Side */}
+            <div className="md:w-1/4 overflow-hidden">
+              <img 
+                src={Stick} 
+                alt="Medical Equipment" 
+                className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            {/* Content Side */}
+            <div className="md:w-3/4 p-8">
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                Stick
+              </h3>
+              <h3 className="text-xl text-gray-700 mb-4">
+                Everactiv 10 Level Height Adjustable Quadripod Walking Stick with Strengthened Chassis and Anti-Skid Feet | Perfect Support for Various Surface
+              </h3>
+              <div className="space-y-4">
+                <p className="text-gray-800 text-justify leading-relaxed">
+                  A medical stick—commonly known as a walking stick or cane—is a mobility aid designed to provide balance, support, and stability for individuals with limited mobility or strength. It comes in various types, each tailored to specific needs and physical conditions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+{/* Bed Image and Details Box Section */}
+      <section className="container mx-auto px-4 py-8">
+        <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
+          <div className="flex flex-col md:flex-row">
+            {/* Image Side */}
+            <div className="md:w-1/2 overflow-hidden">
+              <img 
+                src={bed} 
+                alt="Medical Equipment" 
+                className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            {/* Content Side */}
+            <div className="md:w-3/4 p-8">
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                Bed
+              </h3>
+              <h3 className="text-xl text-gray-700 mb-4">
+                ICU Hospital Bed Mechanical 5 Function with Wheels ABS Panel and Railing and Mattress
+              </h3>
+              <div className="space-y-4">
+                <p className="text-gray-800 text-justify leading-relaxed">
+                  Features: 5 Mechanical Functions: Manual crank system to adjust height, backrest, leg rest, Trendelenburg & reverse Trendelenburg. ABS Panels & Side Railings: Easy to clean, detachable, and hygienic. Caster Wheels with Brakes: Ensures effortless mobility and secure positioning. Sturdy Frame Construction: Mild steel with epoxy coating for durability. Comfort Mattress Included: Promotes patient comfort for extended stays. IV Rod & Drainage Hooks Included: Complete for ICU needs.
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Call to Action */}
       <section className="container mx-auto px-4 py-16 text-center">
@@ -259,7 +262,7 @@ export default function Welcome() {
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
-            <Heart className="text-red-400" size={24} />
+        
             <p className="text-xl font-semibold">ASM - Amine Shariyat Mission</p>
           </div>
           <p className="text-gray-400">Serving the community with compassion and care</p>

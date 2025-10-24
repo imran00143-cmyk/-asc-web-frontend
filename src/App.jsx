@@ -14,6 +14,8 @@ import EquipmentForm from './pages/EquipmentForm';
 import RentForm from './pages/RentForm';
 import ReturnForm from './pages/ReturnForm';
 import Reports from './pages/Reports';
+import Gallery from './pages/Gallery';
+import About from './pages/About';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/register-beneficiary" element={<PublicBeneficiaryForm />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About />} />
           
           <Route path="/dashboard" element={<PrivateRoute />}>
             <Route index element={<Dashboard />} />
@@ -47,6 +51,7 @@ function App() {
           <Route path="/reports" element={<PrivateRoute />}>
             <Route index element={<Reports />} />
           </Route>
+          <Route path="/gallery" element={<Gallery />} />
           
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
