@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LogIn, AlertCircle } from 'lucide-react';
-import Logo from '../assets/Logos/ASM-w.png';
+import Logo from '../assets/Logos/ASM-W.png';
 import Brown_Leaves from '../assets/Gumbad/Brown_Leaves.jpg';
 
 function Login() {
