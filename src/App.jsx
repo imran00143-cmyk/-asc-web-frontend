@@ -1,7 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import Welcome from './pages/Welcome';
 import PublicBeneficiaryForm from './pages/PublicBeneficiaryForm';
 import Login from './pages/Login';
@@ -17,10 +19,36 @@ import Reports from './pages/Reports';
 import Gallery from './pages/Gallery';
 import About from './pages/About';
 
+// Small component that initializes AOS once and refreshes on each navigation
+function AOSHandler() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Initialize only once (AOS.init is idempotent)
+    AOS.init({
+      duration: 1200,
+      easing: 'ease-in-out',
+      once: false,
+      offset: 120,
+    });
+  }, []); // run once on mount
+
+  useEffect(() => {
+    // Refresh AOS calculations whenever route changes so newly rendered elements animate
+    AOS.refresh();
+    // optionally scroll to top on navigation:
+    // window.scrollTo(0, 0);
+  }, [location]);
+
+  return null;
+}
+
+
 function App() {
   return (
     <AuthProvider>
       <Router basename={import.meta.env.BASE_URL}>
+        <AOSHandler />
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/register-beneficiary" element={<PublicBeneficiaryForm />} />

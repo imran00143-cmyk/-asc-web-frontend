@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
+import { motion } from 'framer-motion';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import Gumbad from '../assets/Gumbad/Gumbad.png';
 import OxygenConcentrator from '../assets/Equipment/OxygenConcentrator.png';
 import Logo from '../assets/Logos/ASM.png';
@@ -17,7 +20,7 @@ export default function Welcome() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-200 via-yellow to-green-200">
       {/* Header */}
-      <header className="bg-green-100 shadow-md sticky top-0 z-50">
+      <header className="bg-gray-900 shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -58,7 +61,7 @@ export default function Welcome() {
               </div>
               <button
                 onClick={() => navigate('/login')}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold transition-colors shadow"
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-semibold transition-colors shadow"
 
               >
                 <LogIn size={20} />
@@ -91,7 +94,13 @@ export default function Welcome() {
       </section>
 
       {/* OxygenConcentrator Image and Details Box Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-offset="120"
+        data-aos-easing="ease-in-out"
+        data-aos-once="false"
+      >
         <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
           <div className="flex flex-col md:flex-row">
             {/* Image Side */}
@@ -121,7 +130,13 @@ export default function Welcome() {
       </section>
 
       {/* Oxygen cylinder Image and Details Box Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-offset="120"
+        data-aos-easing="ease-in-out"
+        data-aos-once="false"      
+      >
         <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
           <div className="flex flex-col md:flex-row-reverse">
             {/* Image Side */}
@@ -151,7 +166,13 @@ export default function Welcome() {
       </section>
 
 {/* Wheelchair Image and Details Box Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-offset="120"
+        data-aos-easing="ease-in-out"
+        data-aos-once="false"
+      >
         <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
           <div className="flex flex-col md:flex-row">
             {/* Image Side */}
@@ -182,7 +203,13 @@ export default function Welcome() {
       </section>
 
 {/* Stick Image and Details Box Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-offset="120"
+        data-aos-easing="ease-in-out"
+        data-aos-once="false"
+      >
         <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
           <div className="flex flex-col md:flex-row-reverse">
             {/* Image Side */}
@@ -212,7 +239,13 @@ export default function Welcome() {
       </section>
 
 {/* Bed Image and Details Box Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-offset="120"
+        data-aos-easing="ease-in-out"
+        data-aos-once="false"
+      >
         <div className="bg-gray-300 hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-[1.02]">
           <div className="flex flex-col md:flex-row">
             {/* Image Side */}

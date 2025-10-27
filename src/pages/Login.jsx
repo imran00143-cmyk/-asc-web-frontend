@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LogIn, AlertCircle } from 'lucide-react';
-import Logo from '../assets/Logos/ASM.png';
+import Logo from '../assets/Logos/ASM-w.png';
+import Brown_Leaves from '../assets/Gumbad/Brown_Leaves.jpg';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -43,13 +44,13 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-green-300 to-purple-800 overflow-hidden">
+    <div
+      className="min-h-screen bg-cover bg-center relative overflow-hidden"
+      style={{ backgroundImage: `url(${Brown_Leaves})` }}
+    >      
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div className="absolute -top-1/2 -left-1/2 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-        <div className="absolute top-0 -right-1/2 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-1/2 left-1/2 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div className="absolute inset-0 backdrop-blur-[120px]"></div>
+        <div className="absolute inset-0 backdrop-blur-[3px]"></div>
       </div>
 
       {/* Go to Home Button */}
@@ -66,20 +67,26 @@ function Login() {
       </div>
 
       {/* Split Layout Container */}
-      <div className="relative min-h-screen flex flex-col lg:flex-row items-center">
+      <div className="relative min-h-screen flex flex-col lg:flex-row items-center"
+        data-aos="fade-up"
+        data-aos-delay="2200"
+        data-aos-offset="120"
+      >
         {/* Left Side - Logo Section */}
-        <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center p-16">
+        <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center p-16"
+        data-aos="flip-left"
+        >
           <div className="text-center relative">
-            <div className="absolute inset-0 bg-blue-600/20 rounded-full filter blur-3xl animate-pulse"></div>
+            <div className="absolute inset-0 bg-white/30 rounded-full filter blur-2xl animate-spin"></div>
             <img 
               src={Logo} 
               alt="ASM Logo" 
-              className="h-72 mx-auto mb-12 filter drop-shadow-2xl transform hover:scale-105 transition-transform duration-300 relative z-10" 
+              className="h-80 mx-auto mb-12 filter drop-shadow-2xl transform hover:scale-105 transition-transform duration-300 relative z-10" 
             />
             <h1 className="text-5xl font-bold text-white mb-6 text-shadow-lg relative z-10">
               Welcome to ASM
             </h1>
-            <p className="text-2xl text-white/90 relative z-10">
+            <p className="text-xl text-white/90 relative z-10">
               Empowering Communities Through Healthcare Support
             </p>
           </div>
